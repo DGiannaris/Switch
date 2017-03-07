@@ -1,0 +1,22 @@
+
+
+<!--overpowered button-->
+<button onclick="myFunction()">Click me</button>
+
+
+
+
+<script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+
+<script>
+function myFunction() {
+         let socket =io('http://localhost:8000');//the node server
+	socket.on('alert',function(data){
+     console.log(data);
+})//if/when you get message from server      
+}
+</script>
+
+
+
+
