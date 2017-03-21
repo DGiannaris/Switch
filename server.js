@@ -1,72 +1,178 @@
 let app = require('http').createServer()//create http localhost
-let io = require('socket.io')(app);
+var io = require('socket.io')(app);
+let request = require('request');
+var api = require('twitch-api-v5');
 app.listen(8000);//8000 port on the localhost server i jst created
+
 let result;
 let result2;
-
-
-
-	
-let https=require('https');
-//let http=require('http');
- let profile;
-let request=function (){
-	https.get("https://api.twitch.tv/kraken/streams/" + "iwilldominate?client_id=p5d4th8o23p7t21fr6hp4gu1n3d2jc"
- 	,function(response)	 
-  {
-	 
- 	//console.log(response.statusCode);//the status of the api server //200 is good xD
- 	let body = ""; 
- 	response.on("data",function(chunk){ //gemizei the fckin body let with the fckin chunks from the fckin api
-	
-	
-	body +=chunk;//get the next chunk of data untill they end (2)
-
-  
-		 
-
- 	});
-	 
- 	 response.on("end",function(){ //when data end (2)
- 		 profile = JSON.parse(body);
-		
-
- if ( profile.stream == null) { 
- 	//if streamer is off
-       result={
-    'Status': 'Offline',
-    'Viewers': ''
-};
-        clearInterval(interval);// stop the brutal management of the poor API when the streamer is offline
-     } else {
-
-     	//if streamer in on
-
-       result=result={
-    'Status': 'Live',
-    'Viewers': ''+profile.stream.viewers
-};
-	   
-      
-     }
-
-
-		
- 	 });
-  });
- 	};
- let interval=setInterval(request,1000);// to be done for 300000,which is 5 mins
-
-
-
-
-
-
+let existsflag;
+let channelid;
+let savedStreamers = [];
+var status;
+let channelname;
+let gotStreamers=1;
 
 
 io.on('connection',function(socket){
-socket.emit('alert',result);//send the results to client
+
+socket.on('getname',function(data){
+   
 
 
 
-});
+	let options = 
+	{
+	       url: 'https://api.twitch.tv/kraken/users?login='+data,
+	      
+
+	        method: 'GET',
+	        form: '',
+	        headers: 
+	        {
+	            'Client-ID': 'p5d4th8o23p7t21fr6hp4gu1n3d2jc',
+	            'Accept': 'application/vnd.twitchtv.v5+json',
+	            'Content-Type': 'application/json',
+	            'Authorization': ''
+	        }
+	};
+	    request(options, (err, res, body) => {
+
+	  result2 = JSON.parse(body);
+
+	if (result2._total != 0)
+	{
+	 	existsflag=1;
+		 if (data != '')
+		 {
+		 channelid=result2.users[0]._id;//auth thn mlkia thn stelnw stou alekou
+		 }
+
+	}
+	else
+	{
+		 existsflag=0;
+	}
+
+
+	console.log(existsflag+"/"+channelid);
+
+	 socket.emit('alert1',channelid);  //send the results to client               
+                                                 });
+
+
+    
+
+
+
+   })//socket on getname
+
+});//io on get name
+
+
+
+
+
+	io.on('connection',function(socket){
+
+	 socket.on('getstreams',function(data){
+
+
+
+		setTimeout(streamstatus, 2000);// den gemizan oi vars egkaira gt to api ths twitch gamietai
+
+		if(channelid != undefined)
+		{
+			data.streams.push(channelid)
+		}
+
+		function streamstatus()
+		 { //40336240,44741426,31989055
+			if(data != null)
+			{   console.log("going for status")
+			    console.log(data.streams.toString().replace(['[',']'],''))
+				let options =
+				 {
+			       url: 'https://api.twitch.tv/kraken/streams/?channel='+data.streams.toString().replace(['[',']'],''),
+			         //url: 'https://api.twitch.tv/kraken/streams/codepougurnaei',// apo to onject pairneis to id kai to xtupas edw k pirneis live ktl
+			       //44741426
+			       //39548541
+			       //31989055
+			//  url: 'https://api.twitch.tv/kraken/streams/?channel=40336240',url: 'https://api.twitch.tv/kraken/users?login=summonersinnlive'
+
+			        method: 'GET',
+			        form: '',
+			        headers:
+			         {
+			            'Client-ID': 'p5d4th8o23p7t21fr6hp4gu1n3d2jc',
+			            'Accept': 'application/vnd.twitchtv.v5+json',
+			            'Content-Type': 'application/json',
+			            'Authorization': ''
+			        }
+			     };
+
+			request(options, (err, res, body) => {
+
+			  result = JSON.parse(body);
+
+			 
+
+			if(result._total != 0)
+			{
+				  status=result
+
+				// for(var streams in result){
+				// 	console.log("GIWTA: "+i)
+				// let test=result
+				for( var i = 0; i <= result.streams.length - 1; i++ )
+				{
+				       
+				   	status = {'ChannelID':result.streams[i].channel._id,
+				   	'Name': result.streams[i].channel.name,
+				   	'Viewers' : result.streams[i].viewers,
+				    'Status': '1',//psiloaxrhsto giati mono tous live stelnw...oi offline einai null kai ara den stelnw tipota,den mporw n tous kanw iterate
+				    'Game': result.streams[i].channel.game
+				          } ;
+				         
+				// // console.log(util.inspect(status, false, null)) debug
+					
+						socket.emit('alert',status ) ;//send the results to client
+		            
+				                      
+				
+			    }//forend 
+			 }//ifend         
+	     });//request end
+	   }//ifexists end
+	 }//function end
+			
+		let interval=setInterval(streamstatus,1000);// to be done for 300000,which is 5 mins
+		//emit otan allazw status mallon,dld offline,online h viewers
+
+
+		  })//io on connection streams
+		})//socket on streams
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

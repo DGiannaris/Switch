@@ -1,20 +1,65 @@
 
 
 <!--overpowered button-->
-<button onclick="myFunction()">Click me</button>
+<button id="forname" onclick="myFunction1()">forname</button>
+<button id="forstreams" onclick="myFunction2()">forstreams</button>
 
 
 
+
+<textarea id="name" rows="4" cols="50">
+streamerhouse
+</textarea>
+
+<textarea id="streams" rows="4" cols="50">
+ 40336240,31989055
+</textarea>
 
 <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
 
 <script>
-function myFunction() {
-         let socket =io('http://localhost:8000');//the node server
-	socket.on('alert',function(data){
-     console.log(data);
-})//if/when you get message from server      
+var socket =io('http://localhost:8000');//the node server
+
+function myFunction1() 
+{
+   
+	//sending data to server
+	socket.emit('getname',document.getElementById("name").value) ;  
+	
+         myFunction4()
+	
+
 }
+
+
+function myFunction2()
+ {
+   
+	//sending data to server
+	socket.emit('getstreams', {streams: [document.getElementById("streams").value.split(',')] }); 
+	myFunction3()
+               
+ }
+
+function myFunction3() 
+{
+         
+		socket.on('alert',function(data){
+	     console.log(data);
+	})//if/when you get message from server  
+ 
+                    
+}
+
+function myFunction4() 
+{
+         
+	   socket.on('alert1',function(data){
+	     console.log(data);
+	})//if/when you get message from server 
+           
+}
+
 </script>
 
 
