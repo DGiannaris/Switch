@@ -1,5 +1,3 @@
-"use strict";
-
 let app = require('http').createServer()//create http localhost
 var io = require('socket.io')(app);
 let request = require('request');
