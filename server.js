@@ -3,6 +3,9 @@ var io = require('socket.io')(app);
 let request = require('request');
 app.listen(8000);//8000 port on the localhost server i jst created
 
+
+
+var total=-1;
 let result;
 let result2;
 let existsflag;
@@ -80,7 +83,11 @@ io.on('connection',function(socket){
 		setTimeout(streamstatus, 2000);// den gemizan oi vars egkaira gt to api ths twitch gamietai
 
 		if(channelid != undefined) {
-			data.streams.push(channelid)
+			
+          if (!(data.streams.indexOf(channelid) > -1)) {
+             data.streams.push(channelid)
+           } 
+
 		}
 
 		function streamstatus() { //40336240,44741426,31989055
@@ -114,16 +121,13 @@ io.on('connection',function(socket){
 
 			if(result._total != 0)
 			{
-				  status=result
-
-				// for(var streams in result){
-				// 	console.log("GIWTA: "+i)
-				// let test=result
-				console.log(result.streams.length)
+                    
+				
 				for( var i = 0; i <= result.streams.length - 1; i++ )
 				{
 				       
-				   	status = {'ChannelID':result.streams[i].channel._id,
+				   	status = {
+				   	'ChannelID':result.streams[i].channel._id,
 				   	'Name': result.streams[i].channel.name,
 				   	'Viewers' : result.streams[i].viewers,
 				    //'Status': '1',//psiloaxrhsto giati mono tous live stelnw...oi offline einai null kai ara den stelnw tipota,den mporw n tous kanw iterate
@@ -131,20 +135,28 @@ io.on('connection',function(socket){
 				          } ;
 				         
 				// // console.log(util.inspect(status, false, null)) debug
-					
-						socket.emit('streamersStatus', status ) ;//send the results to client
-			        
-				                      
-				
+
 			    }//forend 
-			 }//ifend         
-			});//request end
-			}//ifexists end
-		}//function end
+			 }//ifend    
+
+
+			  if(total != result._total)
+			  {
+				socket.emit('streamersStatus', status ) ;
+			  }
+						
+                   total=result._total    
+             
+		});//request end
+	}//ifexists end	
+}//function end
+         
 
 		let interval=setInterval(streamstatus,1000);// to be done for 300000,which is 5 mins
 		//emit otan allazw status mallon,dld offline,online h viewers
 
+
+//send the results to client
 
 	})//socket on streams
 })//io on connection streams
