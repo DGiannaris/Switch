@@ -1,66 +1,65 @@
 
+<html>
+	<header>
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,800" rel="stylesheet">
+		<link rel="stylesheet" href="client.css">
+		<script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+		<script
+		  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		  crossorigin="anonymous">		  	
+	    </script>
+		<script src="client.js"></script>
+	</header>
 
-<!--overpowered button-->
-<button id="forname" onclick="myFunction1()">forname</button>
-<button id="forstreams" onclick="myFunction2()">forstreams</button>
+	<body>
+		<div class="wrapper">
+			<div class="streamerId">
+				<h1>Streamer ID check</h1>
+				<input type="text" class="nameForm" placeholder="Streamer Name">
+				<button onclick="handleNameForm()">Add Streamer</button>
+				<div class="streamer-id-response">
+					<h2>Response Logs</h2>
+					<div class="logs">
+						<div class="input">
+						
+						</div>
+						<div class="output">
+							
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+			<div class="streamersStatus">
+				<h1>Streamers Status</h1>
+				<input type="text" class="streamerIdForm" placeholder="Streamers IDs">
+				<button onclick="handleIdForm()">Add Streamer</button>
+				<div class="streamers-status-response">
+					<h2>Response Logs</h2>
+					<div class="logs">
+						<div class="input">
+						
+						</div>
+						<div class="output">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+		</div>
+
+		
+		
 
 
 
 
-<textarea id="name" rows="4" cols="50">
-streamerhouse
-</textarea>
-
-<textarea id="streams" rows="4" cols="50">
- 40336240,31989055
-</textarea>
-
-<script src="node_modules/socket.io-client/dist/socket.io.js"></script>
-
-<script>
-var socket =io('http://localhost:8000');//the node server
-
-function myFunction1() 
-{
-   
-	//sending data to server
-	socket.emit('getname',document.getElementById("name").value) ;  
-	
-         myFunction4()
-	
-
-}
-
-
-function myFunction2()
- {
-   
-	//sending data to server
-	socket.emit('getstreams', {streams: [document.getElementById("streams").value.split(',')] }); 
-	myFunction3()
-               
- }
-
-function myFunction3() 
-{
-         
-		socket.on('alert',function(data){
-	     console.log(data);
-	})//if/when you get message from server  
- 
-                    
-}
-
-function myFunction4() 
-{
-         
-	   socket.on('alert1',function(data){
-	     console.log(data);
-	})//if/when you get message from server 
-           
-}
-
-</script>
+	</body>
+</html>
 
 
 

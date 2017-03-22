@@ -1,7 +1,8 @@
+"use strict";
+
 let app = require('http').createServer()//create http localhost
 var io = require('socket.io')(app);
 let request = require('request');
-var api = require('twitch-api-v5');
 app.listen(8000);//8000 port on the localhost server i jst created
 
 let result;
@@ -16,81 +17,78 @@ let gotStreamers=1;
 
 io.on('connection',function(socket){
 
-socket.on('getname',function(data){
-   
+	socket.on('getname',function(data){
+		let options = {
+			url: 'https://api.twitch.tv/kraken/users?login='+data,
+			method: 'GET',
+			form: '',
+			headers: {
+				'Client-ID': 'p5d4th8o23p7t21fr6hp4gu1n3d2jc',
+				'Accept': 'application/vnd.twitchtv.v5+json',
+				'Content-Type': 'application/json',
+				'Authorization': ''
+			}
+		};
 
-
-
-	let options = 
-	{
-	       url: 'https://api.twitch.tv/kraken/users?login='+data,
-	      
-
-	        method: 'GET',
-	        form: '',
-	        headers: 
-	        {
-	            'Client-ID': 'p5d4th8o23p7t21fr6hp4gu1n3d2jc',
-	            'Accept': 'application/vnd.twitchtv.v5+json',
-	            'Content-Type': 'application/json',
-	            'Authorization': ''
-	        }
-	};
 	    request(options, (err, res, body) => {
+			result2 = JSON.parse(body);
+			if (result2._total != 0) {
+			 	existsflag = 1;
+				 if (data != '') {
+				 	channelid = result2.users[0]._id;//auth thn mlkia thn stelnw stou alekou
+				 }
+			} else {
+				 existsflag = 0;
+			}
 
-	  result2 = JSON.parse(body);
+			console.log(existsflag + "/" + channelid);
 
-	if (result2._total != 0)
-	{
-	 	existsflag=1;
-		 if (data != '')
-		 {
-		 channelid=result2.users[0]._id;//auth thn mlkia thn stelnw stou alekou
-		 }
+			//Use ternary to check if user exists
+			/* Ternary example:
 
-	}
-	else
-	{
-		 existsflag=0;
-	}
+				//PseudoCode
+				let flag = true
 
+				flag ? 'Do that if true' : 'Do that if false'
 
-	console.log(existsflag+"/"+channelid);
+				//Output
 
-	 socket.emit('alert1',channelid);  //send the results to client               
-                                                 });
+				'Do that if true'
+				
+				------------------------------------------------
 
+				Think of it like:
 
-    
+				if (flag) {
+					'Do that if true'
+				} else {
+					'Do that if false'
+				}
 
-
-
-   })//socket on getname
-
+			*/
+			socket.emit('streamerId', existsflag ? channelid : 'User does not exist!');  //send the results to client         
+		});
+	})//socket on getname
 });//io on get name
 
 
 
 
 
-	io.on('connection',function(socket){
+io.on('connection',function(socket){
 
-	 socket.on('getstreams',function(data){
-
-
+	socket.on('getstreams',function(data){
 
 		setTimeout(streamstatus, 2000);// den gemizan oi vars egkaira gt to api ths twitch gamietai
 
-		if(channelid != undefined)
-		{
+		if(channelid != undefined) {
 			data.streams.push(channelid)
 		}
 
-		function streamstatus()
-		 { //40336240,44741426,31989055
-			if(data != null)
-			{   console.log("going for status")
-			    console.log(data.streams.toString().replace(['[',']'],''))
+		function streamstatus() { //40336240,44741426,31989055
+			if(data != null) {
+				console.log("going for status")
+		    	console.log(data.streams.toString().replace(['[',']'],''))
 				let options =
 				 {
 			       url: 'https://api.twitch.tv/kraken/streams/?channel='+data.streams.toString().replace(['[',']'],''),
@@ -114,7 +112,6 @@ socket.on('getname',function(data){
 			request(options, (err, res, body) => {
 
 			  result = JSON.parse(body);
-
 			 
 
 			if(result._total != 0)
@@ -124,34 +121,35 @@ socket.on('getname',function(data){
 				// for(var streams in result){
 				// 	console.log("GIWTA: "+i)
 				// let test=result
+				console.log(result.streams.length)
 				for( var i = 0; i <= result.streams.length - 1; i++ )
 				{
 				       
 				   	status = {'ChannelID':result.streams[i].channel._id,
 				   	'Name': result.streams[i].channel.name,
 				   	'Viewers' : result.streams[i].viewers,
-				    'Status': '1',//psiloaxrhsto giati mono tous live stelnw...oi offline einai null kai ara den stelnw tipota,den mporw n tous kanw iterate
+				    //'Status': '1',//psiloaxrhsto giati mono tous live stelnw...oi offline einai null kai ara den stelnw tipota,den mporw n tous kanw iterate
 				    'Game': result.streams[i].channel.game
 				          } ;
 				         
 				// // console.log(util.inspect(status, false, null)) debug
 					
-						socket.emit('alert',status ) ;//send the results to client
-		            
+						socket.emit('streamersStatus', status ) ;//send the results to client
+			        
 				                      
 				
 			    }//forend 
 			 }//ifend         
-	     });//request end
-	   }//ifexists end
-	 }//function end
-			
+			});//request end
+			}//ifexists end
+		}//function end
+
 		let interval=setInterval(streamstatus,1000);// to be done for 300000,which is 5 mins
 		//emit otan allazw status mallon,dld offline,online h viewers
 
 
-		  })//io on connection streams
-		})//socket on streams
+	})//socket on streams
+})//io on connection streams
 
 
 

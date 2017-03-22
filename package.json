@@ -12,5 +12,8 @@
     "http": "0.0.0",
     "https": "^1.0.0",
     "socketio": "^1.0.0"
+  },
+  "devDependencies": {
+    "request": "^2.81.0"
   }
 }
