@@ -21,6 +21,13 @@ function handleNameForm() {
 	
 }
 
+function handleAddStreamerId() {
+	let streamerId = $('.nameAdd').val();
+	//sendind id to server
+	socket.emit('addStreamers', streamerId);
+	$('.streamerAdd').find('.input').append('<p>' + streamerId + '</p>')
+}
+
 
 function listenStreamerId() {
     //if/when you get message from server
