@@ -63,15 +63,24 @@ class AddStreamer extends Component {
 			console.log(name)
 			//Check if streamer already exists
 			let stateStreamers = this.props.streamers
-			let streamerNamesArr = Object.keys(stateStreamers).map(streamerId => {
-				return stateStreamers[streamerId].name.toLowerCase()
-			})
-			let lowerCaseName = name.toLowerCase();
-			if (streamerNamesArr.includes(lowerCaseName)) {
-				this.setState({
-					streamerError: true,
-					streamerErrorDescription: "Streamer is already saved"
+			if(stateStreamers) {
+				let streamerNamesArr = Object.keys(stateStreamers).map(streamerId => {
+					return stateStreamers[streamerId].name.toLowerCase()
 				})
+				let lowerCaseName = name.toLowerCase();
+				if (streamerNamesArr.includes(lowerCaseName)) {
+					this.setState({
+						streamerError: true,
+						streamerErrorDescription: "Streamer is already saved"
+					})
+				} else {
+					this.props.checkStreamer(name)
+					socket.emit('checkStreamer', name)
+					this.setState({
+						streamerVerifyWait: true,
+						streamerName: name
+					})	
+				}
 			} else {
 				this.props.checkStreamer(name)
 				socket.emit('checkStreamer', name)
@@ -80,6 +89,7 @@ class AddStreamer extends Component {
 					streamerName: name
 				})	
 			}
+			
 
 					
 		} else {
@@ -99,7 +109,6 @@ class AddStreamer extends Component {
 		}
 		let userId = this.props.userId
 		if (localStorage.getItem('streamers-' + userId)) {
-			debugger;
 			let stateStreamers = this.props.streamers
 			let savedStreamersArr = Object.keys(stateStreamers).map(streamerId => {
 				return JSON.stringify(stateStreamers[streamerId])

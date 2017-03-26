@@ -2,7 +2,11 @@ import {
 	STREAMER_NAME,
 	STREAMER_ADDED,
 	TOGGLE_ADD_STREAMER_MODAL,
-	ADD_STREAMER_TO_STORE
+	ADD_STREAMER_TO_LOCALSTORAGE,
+	TOGGLE_EDIT_STREAMER_MODAL,
+	UPDATE_STREAMER_TO_STORE,
+	UPDATE_STORE_TO_LOCALSTORAGE,
+	DELETE_STREAMER_FROM_STORE
 } from '../actions/actionTypes';
 
 export default function rootReducer( state = {}, action) {
@@ -52,15 +56,10 @@ export default function rootReducer( state = {}, action) {
 				...state,
 				addStreamerModal: !state.addStreamerModal
 			}
-		case ADD_STREAMER_TO_STORE:
+		case ADD_STREAMER_TO_LOCALSTORAGE:
 			let streamerId2 = action.streamer.id
 			return {
 				...state,
-				// streamers: [
-				// 	...state.streamers,
-				// 	action.streamer
-				// ]
-
 				['streamers-' + state.suUserId]: {
 					...state['streamers-' + state.suUserId],
 					[streamerId2]: {
@@ -68,6 +67,35 @@ export default function rootReducer( state = {}, action) {
 					}
 				}
 			}
+		case TOGGLE_EDIT_STREAMER_MODAL:
+			return {
+				...state,
+				editStreamerModal: !state.editStreamerModal
+			}
+		case UPDATE_STREAMER_TO_STORE:
+			let streamerId3 = action.streamer.id
+			return {
+				...state,
+				['streamers-' + state.suUserId]: {
+					...state['streamers-' + state.suUserId],
+					[streamerId3]: {
+						...action.streamer
+					}
+				}
+			}
+		case UPDATE_STORE_TO_LOCALSTORAGE:
+
+			return {
+				...state,
+				['streamers-' + state.suUserId]: {
+					...action.streamers
+				}
+			}
+		case DELETE_STREAMER_FROM_STORE:
+			/* http://stackoverflow.com/a/35676025 */
+			let updatedState = Object.assign({}, state)
+			delete updatedState['streamers-' + state.suUserId][action.streamerId]
+			return updatedState;
 		default:
 			return state;
 	}

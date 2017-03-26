@@ -15,7 +15,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const initialState = {
 	userName: false,
-	addStreamerModal: false
+	addStreamerModal: false,
+	editStreamerModal: false,
 }
 
 const store = createStore(

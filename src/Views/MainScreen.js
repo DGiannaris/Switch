@@ -35,7 +35,18 @@ class MainScreen extends Component {
 	render() {
 		return (
 			<Row>
-				{this.streamers()}
+				{
+					this.props.streamers
+					?	Object.keys(this.props.streamers).map(streamer => {
+							return (
+								<div key={this.props.streamers[streamer].id}>
+									<span>{this.props.streamers[streamer].name}</span>
+									<span>{this.props.streamers[streamer].love}</span>
+								</div>
+							)
+						})
+					: null
+				}
 			</Row>
 		);
 	}

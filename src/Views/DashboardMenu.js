@@ -3,7 +3,7 @@ import { Row, Col, Button, Modal, Icon, message, notification, Input, Spin, Step
 import UserProfile from '../components/UserProfile';
 import donkeyUser from '../assets/donkey-user.jpg';
 import AddStreamer from '../components/AddStreamer';
-
+import EditStreamers from '../components/EditStreamers';
 
 
 
@@ -52,7 +52,19 @@ class Dashboard extends Component {
 		this.props.toggleAddStreamerModal();		
 	}
 
-
+	editStreamersModal = () => {
+		this.props.toggleEditStreamerModal();
+		if (this.props.editStreamerModal) {
+			this.props.updateStoreToLocalstorage(this.props.streamers)
+			let updatedStreamersFromStore = this.props.streamers
+			let updatedStreamersArr = Object.keys(updatedStreamersFromStore).map( streamer => {
+				return JSON.stringify(updatedStreamersFromStore[streamer])
+			})
+			console.log(updatedStreamersArr)
+			localStorage.setItem('streamers-' + this.props.userId, JSON.stringify(updatedStreamersArr))
+			
+		}
+	}
 
 
 
@@ -82,6 +94,14 @@ class Dashboard extends Component {
 							</Col>
 							<Col span={18} className="menu-item-setting">
 								<a onClick={this.addStreamerModal}>Add Streamer</a>
+							</Col>
+						</Row>
+						<Row className="menu-item" type="flex">
+							<Col span={6} className="menu-item-icon">
+								<Icon type="edit" />
+							</Col>
+							<Col span={18} className="menu-item-setting">
+								<a onClick={this.editStreamersModal}>Edit Streamers</a>
 							</Col>
 						</Row>
 					</Col>
@@ -128,6 +148,35 @@ class Dashboard extends Component {
 						toggleAddStreamerModal= {this.props.toggleAddStreamerModal}
 						streamers={this.props.streamers}
 						userId={this.props.userId}
+					/>
+				</Modal>
+
+				<Modal
+					className="cs-edit-streamers-modal"
+					title="Edit your streamers"
+					visible={this.props.editStreamerModal}
+					width="70vw"
+					onCancel={this.editStreamersModal}
+					footer={
+						[
+			          		<Button
+			          			key="submit"
+			          			size="default"
+			          			type="primary"
+			          			onClick={this.editStreamersModal}
+			          		>
+			          			OK
+			          			<Icon type="check"/>
+			          		</Button>
+						]
+					}
+				>
+					<EditStreamers
+						streamers={this.props.streamers}
+						editStreamersModal={this.props.editStreamersModal}
+						addStreamer = {this.props.addStreamer}
+						updateStoreToLocalstorage= {this.props.updateStoreToLocalstorage}
+						deleteStreamerFromStore={this.props.deleteStreamerFromStore}
 					/>
 				</Modal>
 				

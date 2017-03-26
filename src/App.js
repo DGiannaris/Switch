@@ -36,11 +36,12 @@ class App extends React.Component {
   }
 
 
-  componentWillMount() {
+  componentDidMount() {
     let userObject = JSON.parse(localStorage.getItem('userObject'))
-    let userId = userObject.id
+    let userId = userObject.id 
 
-    if (localStorage.getItem('userObject')) {      
+    if (localStorage.getItem('userObject')) {     
+      
       this.props.actions.logUser(userObject)
       browserHistory.push('/dashboard')
     }
@@ -81,6 +82,10 @@ class App extends React.Component {
                       toggleAddStreamerModal={this.props.actions.toggleAddStreamerModal}
                       streamers={this.props.state['streamers-' + this.props.state.suUserId]}
                       userId={this.props.state.suUserId}
+                      editStreamerModal={this.props.state.editStreamerModal}
+                      toggleEditStreamerModal={this.props.actions.toggleEditStreamerModal}
+                      updateStoreToLocalstorage={this.props.actions.updateStoreToLocalstorage}
+                      deleteStreamerFromStore={this.props.actions.deleteStreamerFromStore}
                     />
                     <Login
                       logUserAction={this.props.actions.logOutUser}

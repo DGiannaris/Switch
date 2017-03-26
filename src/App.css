@@ -36,11 +36,31 @@
   border-radius: 0px;
 }
 
+.ant-rate-star i,
+.anticon-heart {
+    color: #e53935;
+}
+
+.ant-tabs-ink-bar {
+    background: #6441a4;
+}
+
+.ant-rate-star-zero i {
+    color: #e9e9e9;
+}
+
 .ant-btn-primary:hover, .ant-btn-primary:focus {
     background-color: #4e337f;
     border-color: #4e337f;
 }
 
+.ant-modal-body {
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.5;
+    max-height: 60vh;
+    overflow-y: auto;
+}
 
 .ant-layout {
   height: 100%;
@@ -433,4 +453,91 @@
     font-size: 2em;
     font-weight: 900;
     color: #222;
+}
+
+/* Edit Streamers modal */
+
+.edit-streamers-item {
+    height: 250px;
+    margin-bottom: 2em;
+}
+
+.edit-streamers-item img {
+    object-fit: cover;
+    height: calc(100% - 50px);
+    width: 100%;
+    padding: 0 10px;
+}
+
+.edit-streamers-item .ant-card-body {
+    padding: 0;
+    height: calc(100% - 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edit-streamers-item h3 {
+    text-align: center;
+    font-size: 2em
+}
+
+.edit-streamers-item .ant-card-head {
+    padding: 0;
+}
+
+.edit-streamers-item .ant-card-body i.anticon-user {
+    font-size: 100px;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #6441a4;
+    color: white;
+    margin: 0px 10px;
+}
+
+.edit-streamers-buttons-wrapper {
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.edit-streamers-buttons-wrapper button.ant-btn {
+    height: 30px;
+    border-radius: 0px;
+    padding: 0;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-streamers-buttons-wrapper button.ant-btn:hover {
+    border-color: #f46e65;
+    background: #f46e65;
+    color: white;
+}
+
+.edit-streamers-buttons-wrapper i {
+    font-size: 16px;
+    display: inline;
+    background: transparent;
+    width: 14px;
+}
+
+.edit-streamers-buttons-wrapper .anticon-delete:before {
+    display: inline;
+    background: transparent;
+}
+
+.love-meter-wrapper {
+    width: calc(100% - 115px);
+    margin-left: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #6441a4;
 }
