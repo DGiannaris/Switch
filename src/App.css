@@ -1,0 +1,436 @@
+.App {
+  text-align: center;
+  height: 100vh;
+  font-family: 'Raleway';
+  font-weight: 300;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+.ant-btn-primary {
+  background-color: #6441a4;
+  border-color: #6441a4;
+}
+
+.ant-btn {
+  border-radius: 0px;
+}
+
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+    background-color: #4e337f;
+    border-color: #4e337f;
+}
+
+
+.ant-layout {
+  height: 100%;
+}
+
+.hidden-content-login-screen.ant-layout {
+    width: 0px !important;
+    transition: all .3s;
+    flex-grow: 0 !important;
+    display: block;
+}
+
+.ant-layout {
+    overflow: hidden;
+}
+
+.user-logged .hidden-content-login-screen.ant-layout {
+    flex-grow: 1 !important;
+    transition: all .3s;
+}
+
+.app-container {
+  justify-content: center;
+}
+
+.menuCustomIcon {
+    font-size: 3.5em;
+    position: absolute; 
+    left: 1%;
+    top: .25em;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.ant-layout-sider-collapsed .anticon {
+    left: 0px !important;
+}
+
+.anticon.anticon-menu-fold {
+    left: calc(20vw + .5em);
+}
+
+.appSidebar.ant-layout-sider {
+    transition: all .3s;
+    overflow: hidden;
+}
+
+/* Login Screen */
+.login-screen .anticon-menu-fold {
+    display: none;
+}
+
+.loginscreen-wrapper {
+    height: 50vh;
+    background: #6441a4;
+}
+
+.logo-wrapper {
+    background: #fafafa;
+    margin-bottom: 2em;
+    border-radius: 7px;
+}
+
+.logo-wrapper img {
+    width: 100%;
+    height: 100%;
+}
+
+
+.login-intro h1 {
+    color: white;
+    font-weight: 900;
+    text-shadow: 0px 2px 2px rgb(0, 0, 0);
+}
+
+.login-screen-btn-wrapper {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-screen-btn-wrapper button {
+    font-size: 1.75em;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+
+.fb-btn {
+    transition: transform .2s;
+    border-radius: 0px;
+    transform: translateY(0px);
+    box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.36);
+}
+
+.fb-btn:hover {
+    box-shadow: none;
+    transform: translateY(2px);
+}
+
+.login-screen .appSidebar.ant-layout-sider {
+    width: 33vw !important;
+    flex-basis: 33vw !important;
+}
+
+
+/* Dashboard User Profile */
+.user-picture img {
+    height: 100px;
+    border-radius: 50%;
+    width: 100px;
+    object-fit: cover;
+}
+
+.user-name p {
+    font-size: 2em;
+    color: white;
+}
+
+.user-name {
+    padding: 0em 0em 3em 0;
+}
+
+.user-picture {
+    padding: 3em 0 0 0;
+}
+
+
+/* Dashboard Menu */
+
+.menu-item div {
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-item-icon {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.menu-item:hover .menu-item-icon .anticon {
+  color:white;
+}
+
+.menu-item:hover .menu-item-setting a {
+  color: white;
+}
+
+
+
+.menu-item-icon .anticon {
+    font-size: 2.5em;
+    color: rgba(255, 255, 255, 0.31);
+    transition: all .3s;
+}
+
+
+.menu-item-setting a {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.51);
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s;
+}
+
+.menu-item:hover {
+    background: #6441a4;
+}
+
+.menu-item {
+    transition: all .3s;
+}
+
+.testing-area {
+  height: 30vh;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Modal Add Streamer */
+
+.ant-steps .ant-steps-item.ant-steps-status-finish .ant-steps-head-inner {
+    border-color: #6441a4;
+}
+
+.ant-steps .ant-steps-item.ant-steps-status-finish .ant-steps-tail > i:after {
+    background: #6441a4;
+    box-shadow: 0 0 0 0 #6441a4;
+}
+
+.ant-steps .ant-steps-item.ant-steps-status-finish .ant-steps-head-inner > .ant-steps-icon {
+    color: #6441a4;
+}
+
+.ant-steps .ant-steps-item.ant-steps-status-process .ant-steps-head-inner {
+    background: #6441a4;
+    border-color: #6441a4;
+}
+
+.ant-btn:hover, .ant-btn:focus {
+    color: #6441a4;
+    border-color: #6441a4;
+}
+
+.cs-search-result img {
+    height: 140px;
+    width: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.cs-add-streamer-modal .ant-modal-footer {
+    display: none;
+}
+
+.cs-add-streamer-modal .steps-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cs-add-streamer-modal {
+    height: 80vh;
+    max-height: 540px;
+}
+
+.cs-add-streamer-modal .ant-modal-content {
+    height: 100%;
+}
+
+.cs-add-streamer-modal .ant-modal-body {
+    height: calc(100% - 50px);
+}
+
+.cs-add-streamer-modal .ant-modal-body > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* Modal Add Streamer Search */
+
+.cs-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4em 0;
+    height: auto;
+}
+
+.cs-search-field {
+    width: 40%;
+    margin-right: 5%;
+}
+
+.cs-search-field input {
+    padding: 1em;
+    height: auto;
+}
+
+.cs-search-result-wrapper {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+
+.cs-search-result .anticon {
+    background: #6441a4;
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    text-align: center;
+    line-height: 140px;
+    font-size: 80px;
+    color: white;
+}
+
+.cs-search-result h2 {
+    font-weight: 300;
+    font-size: 2.5em;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.cs-search-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cs-search .ant-alert {
+    margin-top: 1em;
+}
+
+/* Modal Add Streamer Rate */
+
+.steps-content .ant-rate-star i {
+    color: #e53935;
+    font-size: 50px;
+}
+
+.steps-content .ant-rate-star-zero i {
+    color: #e9e9e9;
+}
+
+.cs-rate {
+    padding: 4em 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.steps-content p {
+    font-size: 1.5em ;
+    margin: 1em 0;
+}
+
+/* Modal Add Streamer Review */
+
+.cs-review {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4em 0;
+}
+
+.cs-review-streamer-image img {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.cs-review-streamer-image .anticon {
+    background: #6441a4;
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    text-align: center;
+    line-height: 140px;
+    font-size: 80px;
+    color: white;
+}
+
+.cs-review-text {
+    width: 40%;
+    margin-right: 10%;
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cs-review-text span {
+    font-weight: 900;
+    position: relative;
+    display: inline-block;
+}
+
+.cs-review-text span:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 1px 0px;
+    background: black;
+}
+
+.cs-review-streamer-image h2 {
+    text-align: center;
+    font-size: 2em;
+    margin: 1em 0;
+}
+
+.cs-review-streamer-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cs-review-text h2 {
+    font-size: 2em;
+    font-weight: 900;
+    color: #222;
+}
