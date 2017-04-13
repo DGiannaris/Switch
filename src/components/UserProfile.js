@@ -8,7 +8,10 @@ const UserProfile = (props, context) => {
 		<div>
 			<Row className="user-picture" type="flex" justify="center" align="middle">
 				<Col span={8}>
-					<img src={`http://graph.facebook.com/${props.id}/picture?width=9999`} />
+					<img 
+						src={`http://graph.facebook.com/${props.id}/picture?width=9999`} 
+						alt="Facebook profile"
+					/>
 				</Col>
 			</Row>
 

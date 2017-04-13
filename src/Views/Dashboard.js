@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 
 class Dashboard extends Component {
 
@@ -12,12 +12,12 @@ class Dashboard extends Component {
 	renderName() {
 		let userObj = JSON.parse(this.props.userObject);
 		let userName = userObj.userName
-		return 'text'
+		return userName
 	}
 	render() {
 		return (
 			<Row>
-				{this.renderName()}
+				{this.renderName}
 			</Row>
 		);
 	}

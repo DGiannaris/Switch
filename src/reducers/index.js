@@ -6,7 +6,8 @@ import {
 	TOGGLE_EDIT_STREAMER_MODAL,
 	UPDATE_STREAMER_TO_STORE,
 	UPDATE_STORE_TO_LOCALSTORAGE,
-	DELETE_STREAMER_FROM_STORE
+	DELETE_STREAMER_FROM_STORE,
+	FETCHED_ONLINE_STREAMERS
 } from '../actions/actionTypes';
 
 export default function rootReducer( state = {}, action) {
@@ -94,8 +95,22 @@ export default function rootReducer( state = {}, action) {
 		case DELETE_STREAMER_FROM_STORE:
 			/* http://stackoverflow.com/a/35676025 */
 			let updatedState = Object.assign({}, state)
+			let onlineStreamersOld = JSON.parse(state.onlineStreamers)
+			let updatedOnlineStreamers = onlineStreamersOld.filter(item => {
+				return item.ChannelID !== action.streamerId
+			})
 			delete updatedState['streamers-' + state.suUserId][action.streamerId]
-			return updatedState;
+			return {
+				...updatedState,
+				onlineStreamers: JSON.stringify(updatedOnlineStreamers),
+				onlineStreamersUpdated: true
+			};
+		case FETCHED_ONLINE_STREAMERS:
+			let onlineStreamers = (action.onlineStreamers === 'offline') ? 'offline' : JSON.stringify(action.onlineStreamers)
+			return {
+				...state,
+				onlineStreamers
+			}
 		default:
 			return state;
 	}

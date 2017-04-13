@@ -4,8 +4,6 @@ import App from './App';
 import './index.css';
 import { LocaleProvider } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
-import {Router, browserHistory} from 'react-router';
-import routes from './routes';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware, compose} from 'redux';
 import rootReducer from './reducers';

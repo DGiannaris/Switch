@@ -6,8 +6,16 @@ import {
 	TOGGLE_EDIT_STREAMER_MODAL,
 	UPDATE_STREAMER_TO_STORE,
 	UPDATE_STORE_TO_LOCALSTORAGE,
-	DELETE_STREAMER_FROM_STORE
+	DELETE_STREAMER_FROM_STORE,
+	FETCHED_ONLINE_STREAMERS
 } from './actionTypes';
+
+function fetchedFromServer(onlineStreamers) {
+	return {
+		type: FETCHED_ONLINE_STREAMERS,
+		onlineStreamers
+	}
+}
 
 function updateStoreToLocalstorage(streamers) {
 	return {
@@ -94,5 +102,6 @@ export {
 	toggleEditStreamerModal,
 	localStorageToStore,
 	updateStoreToLocalstorage,
-	deleteStreamerFromStore
+	deleteStreamerFromStore,
+	fetchedFromServer
 }

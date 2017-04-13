@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import 'antd/dist/antd.css';
 import './assets/fonts.css';
 import './App.css';
@@ -10,12 +9,14 @@ import MainScreen from './Views/MainScreen';
 import {bindActionCreators} from 'redux';
 import * as appActions from './actions/appActions';
 import { connect } from 'react-redux';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Icon } from 'antd';
 import { browserHistory } from 'react-router';
+import io from 'socket.io-client';
 
+let socket = io('http://localhost:2039')
 const { Header, Sider, Content } = Layout;
 
-class App extends React.Component {
+class App extends Component {
   constructor(props, context) {
     super(props, context)
     this.testAction = this.testAction.bind(this) 
@@ -36,24 +37,29 @@ class App extends React.Component {
   }
 
 
-  componentDidMount() {
-    let userObject = JSON.parse(localStorage.getItem('userObject'))
-    let userId = userObject.id 
-
-    if (localStorage.getItem('userObject')) {     
+  componentWillMount() {
       
-      this.props.actions.logUser(userObject)
-      browserHistory.push('/dashboard')
-    }
+    
 
-    if (localStorage.getItem('streamers-' + userId)) {    
-      let savedStreamers = JSON.parse(localStorage.getItem('streamers-'  + userId))
+      if (localStorage.getItem('userObject')) {  
+
+          let userObject = JSON.parse(localStorage.getItem('userObject'))
+          let userId = userObject.id    
+          this.props.actions.logUser(userObject)
+          browserHistory.push('/dashboard')
+        
+        if (localStorage.getItem('streamers-' + userId)) {    
+          let savedStreamers = JSON.parse(localStorage.getItem('streamers-'  + userId))
+          debugger;
+          
+          savedStreamers.map(streamer => {
+            return this.props.actions.localStorageToStore(JSON.parse(streamer))
+          })   
+        }
+      }
+
       
-      savedStreamers.map(streamer => {
-        this.props.actions.localStorageToStore(JSON.parse(streamer))
-      })
-      console.log('passed streamers to store')
-    }
+    
 
   }
 
@@ -68,6 +74,7 @@ class App extends React.Component {
               collapsedWidth={0}
               width={window.outerWidth / 5 }
               className='appSidebar'
+              breakpoint='xs'
             >
               {
                 this.props.state.userName
@@ -86,6 +93,7 @@ class App extends React.Component {
                       toggleEditStreamerModal={this.props.actions.toggleEditStreamerModal}
                       updateStoreToLocalstorage={this.props.actions.updateStoreToLocalstorage}
                       deleteStreamerFromStore={this.props.actions.deleteStreamerFromStore}
+                      socket={socket}
                     />
                     <Login
                       logUserAction={this.props.actions.logOutUser}
@@ -111,10 +119,18 @@ class App extends React.Component {
                 />
               </Header>
               <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-                <MainScreen
-                  streamers={this.props.state['streamers-' + this.props.state.suUserId]}
-                  addStreamers={this.props.actions.addVerifiedStreamer}
-                />
+                {
+                  this.props.state['streamers-' + this.props.state.suUserId]
+                  ? <MainScreen
+                      streamers={this.props.state['streamers-' + this.props.state.suUserId]}
+                      addStreamers={this.props.actions.addVerifiedStreamer}
+                      socket={socket}
+                      fetchedStreamers={this.props.actions.fetchedFromServer}
+                      onlineStreamers={this.props.state.onlineStreamers}
+                    />
+                  : null
+                }
+                
               </Content>
             </Layout>
           </Layout>         

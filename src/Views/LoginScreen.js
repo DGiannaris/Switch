@@ -9,7 +9,7 @@ class LoginScreen extends Component {
 			<Col span={10}>
 				<Row type="flex" className="logo-wrapper" justify="center">
 					<Col span={18}>
-						<img src={Logo} />
+						<img src={Logo} alt="Logo" />
 					</Col>
 				</Row>
 				<Row type="flex" className="login-intro">

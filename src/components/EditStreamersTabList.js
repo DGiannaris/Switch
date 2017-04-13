@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Modal, Icon, message, notification, Input, Spin, Steps, Rate, Alert, Card } from 'antd';
+import { Row, Col, Button, Icon, Rate, Card } from 'antd';
 
 
 
@@ -28,7 +28,18 @@ class EditStreamersTabList extends Component {
 	removeStreamer(id) {
 		console.log(id)
 		console.log('remove')
+		let socket = this.props.socket
 		this.props.deleteStreamerFromStore(id)
+		socket.emit('resetAll')
+		let streamersArr = Object.keys(this.props.streamers).map(streamer => {
+			
+			return this.props.streamers[streamer].id
+		})
+		let data = {
+			streams: streamersArr
+		}
+		socket.emit('removeStreamer', id)
+		socket.emit('getLivestreams', data)
 	}
 
 
@@ -38,46 +49,55 @@ class EditStreamersTabList extends Component {
 			 	gutter={20}
 			 	type="flex"
 			 	align="middle"
-			 	justify="space-around"
+			 	justify="start"
 			 >
-			 	{
-	 				Object.keys(this.props.streamers).map(streamer => {
-	 					let currentStreamer = this.props.streamers[streamer]
-	 					if (currentStreamer.love == this.props.love) {
-	 						return (
-	 							<Col xs="6" key={currentStreamer.id}>
-	 								<Card
-	 									title={currentStreamer.name}
-	 									bordered={false}
-	 									className="edit-streamers-item"
-	 								>
-	 									{
-	 										currentStreamer.photo
-	 										?	<img src={currentStreamer.photo} />
-	 										: 	<Icon type="user" />
-	 									}
-	 									<div className="edit-streamers-buttons-wrapper">
-		 									<Button
-		 										type="danger"
-		 										onClick={() => this.removeStreamer(currentStreamer.id)}
-		 									>
-		 										Remove <Icon type="delete" />
-		 									</Button>
-		 									<div className="love-meter-wrapper">
-			 									<Rate
-													value={this.props.streamers[streamer].love}
-													character={<Icon type="heart" />}
-													count={3}
-													onChange={(value) => this.rateChange(currentStreamer, value)}
-												/>
-		 									</div>
-	 									</div>
-	 								</Card>
-	 							</Col>
-	 						)
-	 					}
-	 				} )
-	 			}
+				
+					{
+						this.props.streamers
+						?
+							Object.keys(this.props.streamers).map(streamer => {
+		 					let currentStreamer = this.props.streamers[streamer]
+		 					 	
+		 					 		return (
+		 					 			currentStreamer.love === parseInt(this.props.love, 10)
+		 					 			?
+			 					 			<Col xs={6} key={`tab-${currentStreamer.id}`}>
+				 					 			<Card
+				 									title={currentStreamer.name}
+				 									bordered={false}
+				 									className="edit-streamers-item"
+				 								>
+				 									{
+				 										currentStreamer.photo
+				 										?	<img src={currentStreamer.photo} alt="Streamer Profile" />
+				 										: 	<Icon type="user" />
+				 									}
+				 									<div className="edit-streamers-buttons-wrapper">
+					 									<Button
+					 										type="danger"
+					 										onClick={() => this.removeStreamer(currentStreamer.id)}
+					 									>
+					 										Remove <Icon type="delete" />
+					 									</Button>
+					 									<div className="love-meter-wrapper">
+						 									<Rate
+																value={this.props.streamers[streamer].love}
+																character={<Icon type="heart" />}
+																count={3}
+																onChange={(value) => this.rateChange(currentStreamer, value)}
+															/>
+					 									</div>
+				 									</div>
+				 								</Card>
+				 							</Col>
+				 						: null
+		 					 		)
+		 					 	
+							})
+
+						: 'Error. Please refresh...'
+					}					
+				
 			 </Row>
 		)
 	}

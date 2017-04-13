@@ -8,7 +8,7 @@ listenStreamersStatus();
 function handleIdForm() {
 	let id = $('.streamerIdForm').val()
 	//sending data to server
-	socket.emit('getstreams', {streams: id.split(',') }); 
+	socket.emit('getLivestreams', {streams: id.split(',') }); 
 	$('.streamersStatus').find('.input').append('<p>' + id + '</p>')
 	$('.streamerIdForm').val('')
 
@@ -16,7 +16,7 @@ function handleIdForm() {
 
 function handleNameForm() {
 	let streamerName = $('.nameForm').val()
-	socket.emit('getname', streamerName) ;
+	socket.emit('checkStreamer', streamerName) ;
 	$('.streamerId').find('.input').append('<p>' + streamerName + '</p>')
 	
 }

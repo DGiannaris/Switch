@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Modal, Icon, message, notification, Input, Spin, Steps, Rate, Alert } from 'antd';
-import io from 'socket.io-client';
+import { Button, Icon, message, Input, Spin, Steps, Rate, Alert } from 'antd';
 
-let socket = io('http://localhost:8000')
+
 const Search = Input.Search;
 const Step = Steps.Step;
 const steps = [{
@@ -32,13 +31,12 @@ class AddStreamer extends Component {
 		this.streamerShouldAdd = this.streamerShouldAdd.bind(this)
 	}
 	componentDidMount() {
+		let socket = this.props.socket
 		socket.on('streamerId', data => {
-			console.log(data)
-			let name = ( data == 'User does not exist!' ) ? 'Wrong name' : this.state.streamerName
-			let verified = ( name == 'Wrong name') ? false : true
+			let name = ( data === 'User does not exist!' ) ? 'Wrong name' : this.state.streamerName
+			let verified = ( name === 'Wrong name') ? false : true
 			this.setState({
 				streamerVerifyWait: false,
-				streamerVerified: false,
 				streamerId: data.id,
 				streamerPhoto: data.logo,
 				streamerName: name,
@@ -57,10 +55,10 @@ class AddStreamer extends Component {
 	}
 
 	verifyStreamer(name) {
+		let socket = this.props.socket
+
 		//Verify valid twitch username
-		console.log(name)
 		if (name.match(/^[a-zA-Z0-9][\w]{3,24}$/)) {
-			console.log(name)
 			//Check if streamer already exists
 			let stateStreamers = this.props.streamers
 			if(stateStreamers) {
@@ -79,7 +77,8 @@ class AddStreamer extends Component {
 					this.setState({
 						streamerVerifyWait: true,
 						streamerName: name
-					})	
+					})
+					
 				}
 			} else {
 				this.props.checkStreamer(name)
@@ -101,6 +100,7 @@ class AddStreamer extends Component {
 	}
 
 	streamerShouldAdd() {
+		let socket = this.props.socket
 		let streamerInfo = {
 			name: this.state.streamerName,
 			id: this.state.streamerId,
@@ -124,7 +124,6 @@ class AddStreamer extends Component {
 			localStorage.setItem('streamers-' + userId, JSON.stringify(streamers))
 		}
 		this.props.addStreamer(streamerInfo)
-		console.log('action streamer add')
 		message.success('Streamer Added!', 2.5)
 
 		//Reset Steps for next streamer
@@ -136,6 +135,9 @@ class AddStreamer extends Component {
 			streamerLoveMeter: 2,
 			streamerName: 'Add your streamer'
 		})
+
+		//Send ID to server
+		socket.emit('addStreamers', streamerInfo.id)
 	}
 
 	handleAlert() {
@@ -155,7 +157,7 @@ class AddStreamer extends Component {
 				<div className="steps-content">
 					{
 						// Streamer search field
-						this.state.current == 0
+						this.state.current === 0
 						?
 							<div className="cs-search">
 								<div className="cs-search-field">
@@ -179,12 +181,15 @@ class AddStreamer extends Component {
 									
 								</div>
 								<div className="cs-search-result-wrapper">
-									<Spin spinning = {this.state.streamerVerifyWait}>
+									<Spin spinning={this.state.streamerVerifyWait}>
 										<div className="cs-search-result">
 											{
-												this.state.streamerPhoto == null
+												this.state.streamerPhoto === null
 												? <Icon type="user" />
-												: <img src={this.state.streamerPhoto} />
+												: <img
+													src={this.state.streamerPhoto} 
+													alt={this.state.streamerName || 'Streamer placeholder'} 
+													/>
 											}
 											<h2>{this.state.streamerName || 'Add your streamer' }</h2>
 										</div>
@@ -196,7 +201,7 @@ class AddStreamer extends Component {
 
 					{
 						// Streamer love field
-						this.state.current == 1
+						this.state.current === 1
 						?
 							<div className="cs-rate">
 								<p>Choose how much you love {this.state.streamerName}</p>
@@ -211,7 +216,7 @@ class AddStreamer extends Component {
 					}
 					{
 						// Streamer review field
-						this.state.current == 2
+						this.state.current === 2
 						?
 							<div className="cs-review">
 								<div className="cs-review-text">
@@ -227,9 +232,12 @@ class AddStreamer extends Component {
 								<div className="cs-review-streamer-image">
 									<h2>You know, this one</h2>
 									{
-										this.state.streamerPhoto == null
+										this.state.streamerPhoto === null
 										? <Icon type="user" />
-										: <img src={this.state.streamerPhoto} />
+										: <img
+											src={this.state.streamerPhoto} 
+											alt={this.state.streamerName || 'Streamer placeholder'} 
+											/>
 									}
 								</div>
 							</div>
@@ -242,7 +250,7 @@ class AddStreamer extends Component {
 						&&
 						<Button style={{ marginRight: 8 }} onClick={() => this.prev()}>
 						  {
-						  	this.state.current == steps.length - 1
+						  	this.state.current === steps.length - 1
 						  	? 'No'
 						  	: 'Previous'
 						  }

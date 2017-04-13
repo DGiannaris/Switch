@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Button, Icon, Row, Col } from 'antd';
 
-class FacebookBtn extends React.Component {
+class FacebookBtn extends Component {
 	
 	constructor(props) {
 	      super(props);
@@ -55,6 +55,7 @@ class FacebookBtn extends React.Component {
 	    let userObject = JSON.stringify(response)
 	    //debugger;
 	    localStorage.setItem('userObject', userObject)
+	    console.log('LS')
 	}
 
 

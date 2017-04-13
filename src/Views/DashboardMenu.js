@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Modal, Icon, message, notification, Input, Spin, Steps, Rate } from 'antd';
+import { Row, Col, Button, Modal, Icon, message, notification } from 'antd';
 import UserProfile from '../components/UserProfile';
-import donkeyUser from '../assets/donkey-user.jpg';
 import AddStreamer from '../components/AddStreamer';
 import EditStreamers from '../components/EditStreamers';
 
@@ -60,7 +59,6 @@ class Dashboard extends Component {
 			let updatedStreamersArr = Object.keys(updatedStreamersFromStore).map( streamer => {
 				return JSON.stringify(updatedStreamersFromStore[streamer])
 			})
-			console.log(updatedStreamersArr)
 			localStorage.setItem('streamers-' + this.props.userId, JSON.stringify(updatedStreamersArr))
 			
 		}
@@ -142,12 +140,13 @@ class Dashboard extends Component {
 		          	]}
 				>
 					<AddStreamer
-						checkStreamer = {this.props.checkStreamer}
-						addStreamer = {this.props.addStreamer}
-						addStreamerModal = {this.props.addStreamerModal}
-						toggleAddStreamerModal= {this.props.toggleAddStreamerModal}
+						checkStreamer={this.props.checkStreamer}
+						addStreamer={this.props.addStreamer}
+						addStreamerModal={this.props.addStreamerModal}
+						toggleAddStreamerModal={this.props.toggleAddStreamerModal}
 						streamers={this.props.streamers}
 						userId={this.props.userId}
+						socket={this.props.socket}
 					/>
 				</Modal>
 
@@ -174,9 +173,10 @@ class Dashboard extends Component {
 					<EditStreamers
 						streamers={this.props.streamers}
 						editStreamersModal={this.props.editStreamersModal}
-						addStreamer = {this.props.addStreamer}
-						updateStoreToLocalstorage= {this.props.updateStoreToLocalstorage}
+						addStreamer={this.props.addStreamer}
+						updateStoreToLocalstorage={this.props.updateStoreToLocalstorage}
 						deleteStreamerFromStore={this.props.deleteStreamerFromStore}
+						socket={this.props.socket}
 					/>
 				</Modal>
 				
