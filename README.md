@@ -12,11 +12,18 @@ NodeJS/ExpressJS --back-end
 
 In the project directory, you can run:
 
+### `npm/yarn prod-run`
+
+Runs the front end in production mode.<br>
+Runs the NodeJS server at localhot:2039
+Open [http://localhost:2040](http://localhost:2040) to view it in the browser.
+Uses `pushstate-server` to serve files.
+
 ### `npm start`
 
 Runs the app in the development mode.<br>
-Runs the NodeJS server at localhost:8000
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the NodeJS server at localhost:2039
+Open [http://localhost:2040](http://localhost:2040) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
