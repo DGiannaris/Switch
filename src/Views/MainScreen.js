@@ -27,8 +27,8 @@ class MainScreen extends Component {
 	componentDidMount() {
 		let socket = this.props.socket
 		socket.on('streamersStatus', data => {
-			let propsOnline = this.props.onlineStreamers
-			let oldStreamersArr = (propsOnline) ? JSON.parse(propsOnline) : ['']
+			let propsOnline = (data === 'offline') ? 'offline' : this.props.onlineStreamers
+			let oldStreamersArr = (propsOnline && propsOnline !== 'offline') ? JSON.parse(propsOnline) : ['']
 			this.props.fetchedStreamers(data)
 			this.setState({firstFetch:false})
 
@@ -110,6 +110,7 @@ class MainScreen extends Component {
           				: 	<LiveStreamersList
 		          				onlineStreamers={this.props.onlineStreamers}
 		          				streamers={this.props.streamers}
+		          				shell={this.props.shell}
 		          			/>
 	          		}
 	          		</Spin>

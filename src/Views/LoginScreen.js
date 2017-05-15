@@ -6,15 +6,15 @@ class LoginScreen extends Component {
   render() {
     return (
 		<Row type="flex" justify="center" align="middle" className="loginscreen-wrapper">
-			<Col span={10}>
+			<Col span={14}>
 				<Row type="flex" className="logo-wrapper" justify="center">
-					<Col span={18}>
+					<Col span={16}>
 						<img src={Logo} alt="Logo" />
 					</Col>
 				</Row>
 				<Row type="flex" className="login-intro">
 					<Col span={24}>
-						<h1>Welcome to our app</h1>
+						<h1>Manage your favourite streamers</h1>
 					</Col>
 				</Row>
 			</Col>

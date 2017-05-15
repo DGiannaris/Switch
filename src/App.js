@@ -12,9 +12,13 @@ import { connect } from 'react-redux';
 import { Layout, Icon } from 'antd';
 import { browserHistory } from 'react-router';
 import io from 'socket.io-client';
-
 let socket = io('http://localhost:2039')
 const { Header, Sider, Content } = Layout;
+
+const electron = window.require('electron');
+const ipcRenderer = electron.ipcRenderer;
+const shell = electron.shell;
+
 
 class App extends Component {
   constructor(props, context) {
@@ -41,7 +45,7 @@ class App extends Component {
       
     
 
-      if (localStorage.getItem('userObject')) {  
+      if (localStorage.getItem('userObject')) {        
 
           let userObject = JSON.parse(localStorage.getItem('userObject'))
           let userId = userObject.id    
@@ -50,18 +54,22 @@ class App extends Component {
         
         if (localStorage.getItem('streamers-' + userId)) {    
           let savedStreamers = JSON.parse(localStorage.getItem('streamers-'  + userId))
-          debugger;
           
           savedStreamers.map(streamer => {
-            return this.props.actions.localStorageToStore(JSON.parse(streamer))
-          })   
+             this.props.actions.localStorageToStore(JSON.parse(streamer))            
+          })
         }
       }
-
-      
-    
-
   }
+
+  componentDidMount() {
+        ipcRenderer.on('fbLogoutReply', (event, arg) => {
+          console.log(arg)
+        })
+        let streamers = this.props.state['streamers-' + this.props.state.suUserId]
+        console.log('//////Streamers')
+        console.log(streamers)
+  } 
 
   render() {
     return (
@@ -98,6 +106,7 @@ class App extends Component {
                     <Login
                       logUserAction={this.props.actions.logOutUser}
                       logUserState={this.props.state.userName}
+                      ipc={ipcRenderer}
                     />
                   </div>
                 : 
@@ -106,6 +115,7 @@ class App extends Component {
                     <Login
                       logUserAction={this.props.actions.logUser}
                       logUserState={this.props.state.userName}
+                      ipc={ipcRenderer}
                     />
                   </div>
               }
@@ -127,6 +137,7 @@ class App extends Component {
                       socket={socket}
                       fetchedStreamers={this.props.actions.fetchedFromServer}
                       onlineStreamers={this.props.state.onlineStreamers}
+                      shell={shell}
                     />
                   : null
                 }

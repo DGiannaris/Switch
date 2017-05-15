@@ -4,6 +4,15 @@ import { Row, Col, Icon, Card } from 'antd';
 
 
 export default class LiveStreamersTab extends Component {
+	constructor(props) {
+		super(props)
+		this.openStream = this.openStream.bind(this)
+	}
+
+	openStream(stream) {
+		let shell = this.props.shell
+		shell.openExternal(`http://twitch.tv/${stream}`)
+	}
 	render () {
 		let onlineStreamers = JSON.parse(this.props.onlineStreamers)
 		return (
@@ -27,8 +36,12 @@ export default class LiveStreamersTab extends Component {
 				 				onlineStreamers.map((streamer, i) => {
 				 					let currentStreamer = JSON.parse(streamer)
 				 						return (
-				 						<Col xs={24} md={12} lg={6} key={currentStreamer.ChannelID}>
-				 							<a href={`http://twitch.tv/${currentStreamer.Name}`} target="_blank">
+				 						<Col xs={24} md={8} key={currentStreamer.ChannelID}>
+				 							<a 
+				 								// href={`http://twitch.tv/${currentStreamer.Name}`}
+				 								// target="_blank"
+				 								onClick={() => this.openStream(currentStreamer.Name)}
+				 							>
 						 						<Card
 						 							title={currentStreamer.Name}
 						 							bordered={false}

@@ -59,6 +59,7 @@ export default function rootReducer( state = {}, action) {
 			}
 		case ADD_STREAMER_TO_LOCALSTORAGE:
 			let streamerId2 = action.streamer.id
+			console.log('addding: ' + action.streamer.name)
 			return {
 				...state,
 				['streamers-' + state.suUserId]: {
@@ -95,16 +96,27 @@ export default function rootReducer( state = {}, action) {
 		case DELETE_STREAMER_FROM_STORE:
 			/* http://stackoverflow.com/a/35676025 */
 			let updatedState = Object.assign({}, state)
-			let onlineStreamersOld = JSON.parse(state.onlineStreamers)
-			let updatedOnlineStreamers = onlineStreamersOld.filter(item => {
-				return item.ChannelID !== action.streamerId
-			})
-			delete updatedState['streamers-' + state.suUserId][action.streamerId]
-			return {
-				...updatedState,
-				onlineStreamers: JSON.stringify(updatedOnlineStreamers),
-				onlineStreamersUpdated: true
-			};
+
+			if (state.onlineStreamers === 'offline') {
+				//Nobody was online before so just remove the streamer
+				return {
+					...updatedState,
+					onlineStreamers: 'offline',
+					onlineStreamersUpdated: true
+				}
+			} else {
+				let onlineStreamersOld = JSON.parse(state.onlineStreamers)
+				let updatedOnlineStreamers = onlineStreamersOld.filter(item => {
+					return item.ChannelID !== action.streamerId
+				})
+				delete updatedState['streamers-' + state.suUserId][action.streamerId]
+				return {
+					...updatedState,
+					onlineStreamers: JSON.stringify(updatedOnlineStreamers),
+					onlineStreamersUpdated: true
+				};
+			}
+			
 		case FETCHED_ONLINE_STREAMERS:
 			let onlineStreamers = (action.onlineStreamers === 'offline') ? 'offline' : JSON.stringify(action.onlineStreamers)
 			return {

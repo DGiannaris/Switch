@@ -48,6 +48,8 @@ export default class LiveStreamersList extends Component {
 									onlineStreamers={JSON.stringify(lovethree)}
 									love={3}
 									key={3}
+									className="livestreamers-tab-wrapper"
+									shell={this.props.shell}
 
 								/>
 							</TabPane>
@@ -60,6 +62,7 @@ export default class LiveStreamersList extends Component {
 									love={2}
 									key={2}
 									className="livestreamers-tab-wrapper"
+									shell={this.props.shell}
 								/>
 							</TabPane>
 							<TabPane
@@ -71,6 +74,7 @@ export default class LiveStreamersList extends Component {
 									love={1}
 									key={1}
 									className="livestreamers-tab-wrapper"
+									shell={this.props.shell}
 								/>
 							</TabPane>						
 						</Tabs>

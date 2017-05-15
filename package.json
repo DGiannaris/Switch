@@ -1,23 +1,42 @@
 {
-  "name": "suitchall",
+  "name": "Switch",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Manage your favourite streamers",
+  "homepage": "./",
+  "main": "src/electron-starter.js",
   "scripts": {
-    "start": "npm-run-all --parallel server react-start",
-    "react-start": "react-scripts start",
-    "server": "nodemon server.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "web-prod": "pushstate-server build 2040",
-    "server-prod": "node server.js",
-    "prod-run": "npm-run-all --parallel server-prod web-prod"
+    "electron": "electron .",
+    "dev": "nf start -p 3000",
+    "server": "nodemon server.js",
+    "pack": "build --dir",
+    "dist": "build",
+    "postinstall": "install-app-deps"
   },
-  "author": "",
+  "build": {
+    "win": {
+      "target": "nsis",
+      "icon": "public/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": false,
+      "installerIcon": "public/logo.ico"
+    },
+    "directories": {
+      "buildResources": "public"
+    }
+  },
+  "author": "Dimitris Giannaris / Alex Bratsos",
   "license": "ISC",
   "dependencies": {
     "antd": "^2.7.2",
+    "fb": "^2.0.0",
+    "global": "^4.3.2",
     "http": "0.0.0",
     "https": "^1.0.0",
     "nodemon": "^1.11.0",
@@ -28,6 +47,12 @@
     "socketio": "^1.0.0"
   },
   "devDependencies": {
+    "electron": "^1.6.6",
+    "electron-builder": "^17.1.1",
+    "electron-installer-windows": "^0.2.0",
+    "electron-prebuilt": "^1.4.13",
+    "electron-winstaller": "^2.5.2",
+    "foreman": "^2.0.0",
     "react-redux": "^5.0.3",
     "react-router": "^3.0.2",
     "react-scripts": "0.9.0",

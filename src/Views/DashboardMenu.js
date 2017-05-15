@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Button, Modal, Icon, message, notification } from 'antd';
 import UserProfile from '../components/UserProfile';
 import AddStreamer from '../components/AddStreamer';
-import EditStreamers from '../components/EditStreamers';
+import EditStreamersList from '../components/EditStreamersList';
 
 
 
@@ -53,9 +53,10 @@ class Dashboard extends Component {
 
 	editStreamersModal = () => {
 		this.props.toggleEditStreamerModal();
-		if (this.props.editStreamerModal) {
+		if (this.props.editStreamerModal && this.props.streamers) {
 			this.props.updateStoreToLocalstorage(this.props.streamers)
 			let updatedStreamersFromStore = this.props.streamers
+			console.log(this.props.streamers);
 			let updatedStreamersArr = Object.keys(updatedStreamersFromStore).map( streamer => {
 				return JSON.stringify(updatedStreamersFromStore[streamer])
 			})
@@ -80,14 +81,6 @@ class Dashboard extends Component {
 					<Col span={24}>
 						<Row className="menu-item" type="flex">
 							<Col span={6} className="menu-item-icon">
-								<Icon type="setting" />
-							</Col>
-							<Col span={18} className="menu-item-setting">
-								<a onClick={this.showModal}>Settings</a>
-							</Col>
-						</Row>
-						<Row className="menu-item" type="flex">
-							<Col span={6} className="menu-item-icon">
 								<Icon type="user-add" />
 							</Col>
 							<Col span={18} className="menu-item-setting">
@@ -103,21 +96,7 @@ class Dashboard extends Component {
 							</Col>
 						</Row>
 					</Col>
-				</Row>
-				<Row type="flex" className="testing-area">
-					<Col span={24}>
-						<Row type="flex">
-							<Col span={24}>
-								<h1>Testing area</h1>
-							</Col>
-							<Col span={24}>
-								<Button onClick={this.openNotification}>
-									Notification
-								</Button>
-							</Col>
-						</Row>
-					</Col>
-				</Row>
+				</Row>				
 
 				<Modal
 					className="cs-add-streamer-modal"
@@ -170,7 +149,7 @@ class Dashboard extends Component {
 						]
 					}
 				>
-					<EditStreamers
+					<EditStreamersList
 						streamers={this.props.streamers}
 						editStreamersModal={this.props.editStreamersModal}
 						addStreamer={this.props.addStreamer}

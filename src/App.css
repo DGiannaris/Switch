@@ -172,6 +172,7 @@
 .login-screen .appSidebar.ant-layout-sider {
     width: 33vw !important;
     flex-basis: 33vw !important;
+    flex-basis: 768px !important;
 }
 
 
@@ -297,6 +298,7 @@
 }
 
 .cs-add-streamer-modal {
+    min-height: 580px;
     height: 80vh;
     max-height: 540px;
 }
@@ -306,6 +308,7 @@
 }
 
 .cs-add-streamer-modal .ant-modal-body {
+    min-height: 500px;
     height: calc(100% - 50px);
 }
 
@@ -539,6 +542,10 @@
 .edit-streamers-buttons-wrapper .anticon-delete:before {
     display: inline;
     background: transparent;
+}
+
+.edit-streamers-tab-wrapper {
+    min-height: 275px;
 }
 
 .love-meter-wrapper {

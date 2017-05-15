@@ -22,6 +22,7 @@
  var ChannelParams;
  //let ChannelParams1='yoyo';
  let removeId = '';
+ console.log('start...')
 
  io.on( 'connection', function( socket ) {
      socket.on( 'checkStreamer', function( data ) {

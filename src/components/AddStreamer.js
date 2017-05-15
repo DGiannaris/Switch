@@ -35,10 +35,11 @@ class AddStreamer extends Component {
 		socket.on('streamerId', data => {
 			let name = ( data === 'User does not exist!' ) ? 'Wrong name' : this.state.streamerName
 			let verified = ( name === 'Wrong name') ? false : true
+			let photo = ( name === 'Wrong name') ? 'no-user' : data.logo
 			this.setState({
 				streamerVerifyWait: false,
 				streamerId: data.id,
-				streamerPhoto: data.logo,
+				streamerPhoto: photo,
 				streamerName: name,
 				streamerVerified: verified
 			})
@@ -108,7 +109,8 @@ class AddStreamer extends Component {
 			love: this.state.streamerLoveMeter
 		}
 		let userId = this.props.userId
-		if (localStorage.getItem('streamers-' + userId)) {
+		let localStorageSavedStreamers = localStorage.getItem('streamers-' + userId)
+		if (localStorageSavedStreamers && (localStorageSavedStreamers.length > 2)) {
 			let stateStreamers = this.props.streamers
 			let savedStreamersArr = Object.keys(stateStreamers).map(streamerId => {
 				return JSON.stringify(stateStreamers[streamerId])
@@ -184,7 +186,8 @@ class AddStreamer extends Component {
 									<Spin spinning={this.state.streamerVerifyWait}>
 										<div className="cs-search-result">
 											{
-												this.state.streamerPhoto === null
+												(this.state.streamerPhoto === null) ||
+												(this.state.streamerPhoto === 'no-user')
 												? <Icon type="user" />
 												: <img
 													src={this.state.streamerPhoto} 

@@ -12,23 +12,16 @@ class FacebookBtn extends Component {
 
 	componentDidMount() {
 		
+		let ipc = this.props.ipc;
 
-		(function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0];
-		  if (d.getElementById(id)) return;
-		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=379329449114077";
-		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
+		ipc.on('fbReply', (event, arg) => {
+			console.log('reply = ' + arg)
+			this.responseFacebook(arg)
+		})
 
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId: "379329449114077",
-				cookie: true,
-				xfbml: true,
-				version: 'v2.8'
-			});
-		};
+		ipc.on('fbLogoutReply', (event, arg) => {
+			console.log(arg)
+		})
 	}
 
 	responseApi (authResponse) {
@@ -64,12 +57,21 @@ class FacebookBtn extends Component {
 	}
 
 	logOutBtn() {
-		FB.api('/me/permissions', 'delete', function(response) {
-		    console.log(response.success); // true for successful logout.
-		});
+		// FB.api('/me/permissions', 'delete', function(response) {
+		//     console.log(response.success); // true for successful logout.
+		// });
+		let ipc = this.props.ipc
+		ipc.send('fbLogout')
 		this.props.logUserAction();
 		localStorage.removeItem('userObject')
 		browserHistory.push('/')
+	}
+
+	electronFb() {
+		let ipc = this.props.ipc
+		console.log('clicked')
+
+		ipc.send('fbBtn', 'electron btn clicked!')
 	}
 
 	render() {
@@ -93,7 +95,17 @@ class FacebookBtn extends Component {
 								</Row>
 							: 
 							<div className="login-screen-btn-wrapper">
-								<Button className="fb-btn fb-login-btn" type="primary" size="large" onClick={this.clickHandler.bind(this)}>
+								{
+									//<Button className="fb-btn fb-login-btn" type="primary" size="large" onClick={this.clickHandler.bind(this)}>
+									//	Login with Facebook <Icon type="user" />
+									//</Button>
+								}
+								<Button
+									className="fb-btn fb-login-btn"
+									type="primary"
+									size="large"
+									onClick={this.electronFb.bind(this)}
+								>
 									Login with Facebook <Icon type="user" />
 								</Button>
 
