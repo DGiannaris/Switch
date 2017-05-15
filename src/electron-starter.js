@@ -3,6 +3,9 @@ const electron = require('electron');
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+// Autoupdater
+const {autoUpdater} = require("electron-updater");
+
 
 const path = require('path');
 const url = require('url');
@@ -15,7 +18,18 @@ const server = require('./server');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+autoUpdater.on('update-downloaded', (ev, info) => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 5 seconds.
+  // You could call autoUpdater.quitAndInstall(); immediately
+    mainWindow.webContents.executeJavaScript(`console.log(${ev, info}})`);
+    mainWindow.webContents.executeJavaScript(`alert('test updates')`);
+    autoUpdater.quitAndInstall();  
+})
 
+autoUpdater.on('update-not-available', (ev, info) => {
+    mainWindow.webContents.executeJavaScript(`console.log('no updates')`);
+})
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -25,8 +39,8 @@ function createWindow() {
         taskbar: false,
         icon: 'https://raw.githubusercontent.com/DGiannaris/Switch/master/logo.ico',
     });
-    
     mainWindow.setMenu(null);
+    mainWindow.webContents.executeJavaScript(`console.log('should run by now')`);
     //  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
     //  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
     const {ipcMain} = require('electron');
@@ -110,7 +124,10 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+    createWindow();
+    autoUpdater.checkForUpdates();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -126,6 +143,7 @@ app.on('activate', function () {
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) {
         createWindow()
+
     }
 });
 

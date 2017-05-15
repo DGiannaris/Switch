@@ -14,9 +14,15 @@
     "server": "nodemon server.js",
     "pack": "build --dir",
     "dist": "build",
+    "release": "build --win -p always",
     "postinstall": "install-app-deps"
   },
   "build": {
+    "publish": [{
+         "provider": "github",
+         "owner": "DGiannaris",
+         "repo": "switch"
+     }],
     "win": {
       "target": "nsis",
       "icon": "public/logo.ico"
@@ -35,6 +41,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^2.7.2",
+    "electron-updater": "^1.15.0",
     "fb": "^2.0.0",
     "global": "^4.3.2",
     "http": "0.0.0",
