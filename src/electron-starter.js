@@ -27,8 +27,19 @@ autoUpdater.on('update-downloaded', (ev, info) => {
     autoUpdater.quitAndInstall();  
 })
 
-autoUpdater.on('update-not-available', (ev, info) => {
-    mainWindow.webContents.executeJavaScript(`console.log('no updates')`);
+autoUpdater.on('checking-for-update', () => {
+    mainWindow.webContents.executeJavaScript(`console.log('checking for updates')`);
+})
+
+autoUpdater.on('update-not-available', (info) => {
+    mainWindow.webContents.executeJavaScript(`console.log('updates not available')`);
+    mainWindow.webContents.executeJavaScript(`console.log('${info}')`);
+})
+
+autoUpdater.on('error', (ev, err) => {
+    mainWindow.webContents.executeJavaScript(`console.log('error on updates')`);
+    mainWindow.webContents.executeJavaScript(`console.log('${err}')`);
+    mainWindow.webContents.executeJavaScript(`console.log('${ev}')`);
 })
 function createWindow() {
     // Create the browser window.

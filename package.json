@@ -1,6 +1,6 @@
 {
   "name": "Switch",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "Manage your favourite streamers",
   "homepage": "./",
   "main": "src/electron-starter.js",
@@ -28,8 +28,8 @@
       "icon": "public/logo.ico"
     },
     "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
       "runAfterFinish": false,
       "installerIcon": "public/logo.ico"
     },
