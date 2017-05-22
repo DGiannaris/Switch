@@ -6,7 +6,7 @@ const BrowserWindow = electron.BrowserWindow;
 // Autoupdater
 const {autoUpdater} = require("electron-updater");
 
-
+const {ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
 const FB = require('fb');
@@ -18,17 +18,13 @@ const server = require('./server');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-autoUpdater.on('update-downloaded', (ev, info) => {
-  // Wait 5 seconds, then quit and install
-  // In your application, you don't need to wait 5 seconds.
-  // You could call autoUpdater.quitAndInstall(); immediately
-    mainWindow.webContents.executeJavaScript(`console.log(${ev, info}})`);
-    mainWindow.webContents.executeJavaScript(`alert('test updates')`);
-    autoUpdater.quitAndInstall();  
-})
 
 autoUpdater.on('checking-for-update', () => {
     mainWindow.webContents.executeJavaScript(`console.log('checking for updates')`);
+})
+
+autoUpdater.on('update-available', (info) => {
+    //mainWindow.webContents.executeJavaScript(`var updateInfoFromElectron = ${info}`)
 })
 
 autoUpdater.on('update-not-available', (info) => {
@@ -47,14 +43,34 @@ function createWindow() {
         width: 1280,
         'minWidth': 1280,
         height: 768,
+        'minHeight': 400,
         taskbar: false,
         icon: 'https://raw.githubusercontent.com/DGiannaris/Switch/master/logo.ico',
     });
     mainWindow.setMenu(null);
     mainWindow.webContents.executeJavaScript(`console.log('should run by now')`);
     //  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
-    //  Example of IPC Renderer, http://electron.atom.io/docs/api/ipc-main/
-    const {ipcMain} = require('electron');
+    
+    ipcMain.on('getVersion', (event, arg) => {
+        let version = app.getVersion();
+        autoUpdater.on('update-available', (info) => {
+            event.sender.send('updateInfoReply', info)
+        })
+        event.sender.send('versionReply', version)
+    })
+
+    ipcMain.on('getUpdate', (event, arg) => {
+        event.sender.send('updateStarted', 'update started')
+        autoUpdater.on('download-progress', progress => {
+            event.sender.send('updateProgressReply', progress)
+        })
+        autoUpdater.downloadUpdate()
+    })
+
+    ipcMain.on('installUpdate', (event, arg) => {
+        autoUpdater.quitAndInstall()
+        
+    })
     ipcMain.on('fbBtn', (event, arg) => {
         //FAcebook login flow
         let fbReplyEvent = event
@@ -140,6 +156,7 @@ app.on('ready', function() {
 });
 
 app.on('ready', function() {
+    autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdates();
 })
 

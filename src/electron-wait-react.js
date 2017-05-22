@@ -1,3 +1,4 @@
+"use strict";
 const net = require('net');
 const port = process.env.PORT ? (process.env.PORT - 100) : 2040;
 

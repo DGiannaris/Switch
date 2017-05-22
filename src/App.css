@@ -679,3 +679,28 @@
     margin-right: 15px;
     transform: translateY(5px);
 }
+
+/* Settings Modal */
+
+.settings-wrapper h1 {
+    font-weight: 100;
+    display: inline-block;
+}
+
+.settings-wrapper h1:after {content: "";display: block;width: 100%;height: 1px;background: #222;margin: .25em 0 1em 0;}
+
+.settings-wrapper p {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+.progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-wrapper > div {
+    margin: 1em 0;
+}

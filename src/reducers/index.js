@@ -12,11 +12,6 @@ import {
 
 export default function rootReducer( state = {}, action) {
 	switch(action.type) {
-		case 'TEST_ACTION':
-			return {
-				...state,
-				text: action.text
-			}
 		case 'USER_LOGIN':
 			let userObject = JSON.stringify(action.userObj)
 			return {

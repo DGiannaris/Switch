@@ -67,8 +67,15 @@ class App extends Component {
           console.log(arg)
         })
         let streamers = this.props.state['streamers-' + this.props.state.suUserId]
-        console.log('//////Streamers')
-        console.log(streamers)
+
+        ipcRenderer.send('getVersion');
+        ipcRenderer.on('versionReply', (event, arg) => {
+          localStorage.setItem('appVersion', arg)
+        })
+        ipcRenderer.on('updateInfoReply', (event, arg) => {
+          localStorage.setItem('latestVersion', arg.version)
+        })
+        console.log('asked for version');
   } 
 
   render() {
@@ -102,6 +109,7 @@ class App extends Component {
                       updateStoreToLocalstorage={this.props.actions.updateStoreToLocalstorage}
                       deleteStreamerFromStore={this.props.actions.deleteStreamerFromStore}
                       socket={socket}
+                      ipc={ipcRenderer}
                     />
                     <Login
                       logUserAction={this.props.actions.logOutUser}

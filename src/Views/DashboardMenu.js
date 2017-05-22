@@ -3,6 +3,7 @@ import { Row, Col, Button, Modal, Icon, message, notification } from 'antd';
 import UserProfile from '../components/UserProfile';
 import AddStreamer from '../components/AddStreamer';
 import EditStreamersList from '../components/EditStreamersList';
+import Settings from '../components/Settings';
 
 
 
@@ -10,23 +11,28 @@ class Dashboard extends Component {
 
 	state = {
 		visible: false,
+		openSettings: false,
 	}	
 	
-
-
-	componentDidMount() {
-	}
 
 	showModal = () => {
 		this.setState({
 		  visible: true,
 		});
 	}
+
+	openSettingsToggle = () => {
+		this.setState({
+			openSettings: true
+		})
+	}
+
 	handleOk = (e) => {
 		console.log(e);
 		message.success('Settings saved', 2.5)
 		this.setState({
 		  visible: false,
+		  openSettings: false
 		});
 	}
 
@@ -36,6 +42,7 @@ class Dashboard extends Component {
 		this.setState({
 		  visible: false,
 		  addStreamerModal: false,
+		  openSettings: false
 		});
 	}
 
@@ -93,6 +100,14 @@ class Dashboard extends Component {
 							</Col>
 							<Col span={18} className="menu-item-setting">
 								<a onClick={this.editStreamersModal}>Edit Streamers</a>
+							</Col>
+						</Row>
+						<Row className="menu-item" type="flex">
+							<Col span={6} className="menu-item-icon">
+								<Icon type="setting" />
+							</Col>
+							<Col span={18} className="menu-item-setting">
+								<a onClick={this.openSettingsToggle}>Settings</a>
 							</Col>
 						</Row>
 					</Col>
@@ -160,15 +175,16 @@ class Dashboard extends Component {
 				</Modal>
 				
 		        <Modal
-		        	title="Basic Modal"
-		        	visible={this.state.visible}
+		        	title="Settings"
+		        	visible={this.state.openSettings}
 		          	onOk={this.handleOk}
 		          	onCancel={this.handleCancel}
 		          	okText="Save settings"
+		          	width="70vw"
 		        >
-		          <p>some contents...</p>
-		          <p>some contents...</p>
-		          <p>some contents...</p>
+		          <Settings
+		          	ipc={this.props.ipc}
+		          />
 		        </Modal>
 			</div>
 		);

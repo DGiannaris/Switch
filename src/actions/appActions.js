@@ -38,13 +38,13 @@ function updateStreamerToStore(streamer) {
 		streamer
 	}
 }
-function toggleAddStreamerModal() {
+export function toggleAddStreamerModal() {
 	return {
 		type: TOGGLE_ADD_STREAMER_MODAL
 	}
 }
 
-function toggleEditStreamerModal() {
+export function toggleEditStreamerModal() {
 	return {
 		type: TOGGLE_EDIT_STREAMER_MODAL
 	}
@@ -71,21 +71,15 @@ function localStorageToStore(streamer) {
 	}
 }
 
-function testingAction(text) {
-	return {
-		type: 'TEST_ACTION',
-		text
-	}
-}
 
-function logUser(userObj) {
+export function logUser(userObj) {
 	return {
 		type: 'USER_LOGIN',
 		userObj
 	}
 }
 
-function logOutUser() {
+export function logOutUser() {
 	return {
 		type: 'USER_LOGOUT'
 	}
@@ -93,13 +87,8 @@ function logOutUser() {
 
 
 export {
-	testingAction,
-	logUser,
-	logOutUser,
 	checkStreamer,
 	addVerifiedStreamer,
-	toggleAddStreamerModal,
-	toggleEditStreamerModal,
 	localStorageToStore,
 	updateStoreToLocalstorage,
 	deleteStreamerFromStore,

@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin, notification } from 'antd';
+import { Row, Col, Spin, notification, Alert } from 'antd';
 import LiveStreamersList from '../components/LiveStreamersList';
 
 class MainScreen extends Component {
+
+	constructor(props) {
+		super(props)
+		this.hasUpdate = this.hasUpdate.bind(this)
+	}
+
 	state = {
 		firstFetch: true
 	}
@@ -70,12 +76,7 @@ class MainScreen extends Component {
 			}
 		})
 		
-
-		// If user refresh component will not have the chance for a normal unmount.
-		// In that case, clear the server
-		window.onbeforeunload = () => {
-	//		socket.emit('resetAll')
-		}
+		
 	}
 
 
@@ -95,28 +96,49 @@ class MainScreen extends Component {
 	  });
 	}
 
-	render() {
-		return (
-			<Row
-			 	type="flex"
-			 	justify="center"
-			 	className="livestreamers-wrapper"
-			>
-				<Col xs={24}>
-	          		<Spin spinning={this.state.firstFetch}>
-	          		{
-	          			this.state.firstFetch
-	          			? <div className="fetching-msg">Fetching live streamers...</div>
-          				: 	<LiveStreamersList
-		          				onlineStreamers={this.props.onlineStreamers}
-		          				streamers={this.props.streamers}
-		          				shell={this.props.shell}
-		          			/>
-	          		}
-	          		</Spin>
+	hasUpdate() {
+		console.log('has update called')
+		let appVersion = localStorage.getItem('appVersion')
+		let latestVersion = localStorage.getItem('latestVersion')
+		if (latestVersion > appVersion) {
+			console.log('has update')
+			return <Alert message="Update Available" type="warning" closable />
+			
+		}
+		return <p>test</p>
+	}
 
-				</Col>
-			</Row>
+	render() {
+		let appVersion = localStorage.getItem('appVersion')
+		let latestVersion = localStorage.getItem('latestVersion')
+		return (
+			<div> 
+				{
+					latestVersion > appVersion
+					? <Alert banner message={`Update available (${latestVersion}). Go to settings to download.`} type="warning" closable />
+					: null
+				}
+				<Row
+				 	type="flex"
+				 	justify="center"
+				 	className="livestreamers-wrapper"
+				>
+					<Col xs={24}>
+		          		<Spin spinning={this.state.firstFetch}>
+		          		{
+		          			this.state.firstFetch
+		          			? <div className="fetching-msg">Fetching live streamers...</div>
+	          				: 	<LiveStreamersList
+			          				onlineStreamers={this.props.onlineStreamers}
+			          				streamers={this.props.streamers}
+			          				shell={this.props.shell}
+			          			/>
+		          		}
+		          		</Spin>
+
+					</Col>
+				</Row>
+			</div>
 		);
 	}
 }
